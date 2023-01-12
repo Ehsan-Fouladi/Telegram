@@ -108,7 +108,7 @@ async def queryHandler(update: Update, context: CallbackContext) -> None:
         print(f"likes{like} and dislikes {dislike}")
 
 
-TOKEN = "5928108585:AAEDRlQGgmupa7x2QDtLtN9aU3EDbG66mpo"
+TOKEN = ""
 app = ApplicationBuilder().token(token=TOKEN).build()
 app.add_handler(CommandHandler("start", start))
 app.add_handler(CommandHandler("help", help))
