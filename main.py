@@ -9,7 +9,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     butten = [[KeyboardButton(
         "/Tools")], [KeyboardButton("/Downloads")], [KeyboardButton("/help")]]
     await context.bot.send_message(chat_id=update.effective_chat.id,
-                                   text=(f'خوش آمدید کاربر{update.effective_user.first_name}'), reply_markup=ReplyKeyboardMarkup(butten))
+                                   text=(f'خوش آمدید کاربر{update.effective_user.full_name}'), reply_markup=ReplyKeyboardMarkup(butten))
     await update.message.reply_text("به دنبال جه ابزاری میگردی؟")
 
 
@@ -108,7 +108,7 @@ async def queryHandler(update: Update, context: CallbackContext) -> None:
         print(f"likes{like} and dislikes {dislike}")
 
 
-TOKEN = ""
+TOKEN = "5928108585:AAEDRlQGgmupa7x2QDtLtN9aU3EDbG66mpo"
 app = ApplicationBuilder().token(token=TOKEN).build()
 app.add_handler(CommandHandler("start", start))
 app.add_handler(CommandHandler("help", help))
