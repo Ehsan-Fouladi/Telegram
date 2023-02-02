@@ -1,9 +1,11 @@
 from telegram import Update, KeyboardButton, ReplyKeyboardMarkup, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes, CallbackQueryHandler, CallbackContext
+import logging
 
+logging.basicConfig(
+   format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
-like = 0
-dislike = 0
+logger = logging.getLogger(__name__)
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     butten = [[KeyboardButton(
@@ -27,11 +29,12 @@ async def Tools(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         /SQL
         /docker
         /javaScript
+        /jquery
         """
     )
-    buttons = [[InlineKeyboardButton("👍", callback_data="like")], [
-        InlineKeyboardButton("👎", callback_data="dislike")]]
-    await context.bot.send_message(chat_id=update.effective_chat.id, text=(f'ایا راضی بودی {update.effective_user.full_name}'), reply_markup=InlineKeyboardMarkup(buttons))
+    buttons = [[InlineKeyboardButton("ChatGpt", url="https://chat.openai.com/")], [
+        InlineKeyboardButton("Number land", url="https://numberland.ir/")]]
+    await context.bot.send_message(chat_id=update.effective_chat.id, text=(f'{update.effective_user.full_name}'), reply_markup=InlineKeyboardMarkup(buttons))
 
 
 async def stackoverflow(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -57,6 +60,10 @@ async def docker2(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 async def javaScript(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     await update.message.reply_text("document_javascript: https://javascript.info/")
 
+
+async def jquery(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    await update.message.reply_text("jquery: http://jquery.com/")
+
 # the is have Downloads
 async def Downloads(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     await update.message.reply_text(
@@ -69,10 +76,7 @@ async def Downloads(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         /Docker
         """
     )
-    buttons = [[InlineKeyboardButton("👍", callback_data="like")], [
-        InlineKeyboardButton("👎", callback_data="dislike")]]
-    await context.bot.send_message(chat_id=update.effective_chat.id, text=(f'ایا راضی بودی {update.effective_user.full_name}'), reply_markup=InlineKeyboardMarkup(buttons))
-
+    
 async def linux(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     await update.message.reply_text("linux: https://ubuntu.com/download/desktop")
 
@@ -93,21 +97,6 @@ async def docker(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     await update.message.reply_text("Docker: https://desktop.docker.com/win/main/amd64/Docker%20Desktop%20Installer.exe")
 
 
-async def queryHandler(update: Update, context: CallbackContext) -> None:
-    query = update.callback_query.data
-    await update.callback_query.answer()
-
-    global like, dislike
-
-    if "like" in query:
-        like += 1
-
-    elif "dislike" in query:
-        dislike += 1
-
-        print(f"likes{like} and dislikes {dislike}")
-
-
 TOKEN = "5928108585:AAEDRlQGgmupa7x2QDtLtN9aU3EDbG66mpo"
 app = ApplicationBuilder().token(token=TOKEN).build()
 app.add_handler(CommandHandler("start", start))
@@ -120,6 +109,7 @@ app.add_handler(CommandHandler("django", django))
 app.add_handler(CommandHandler("sql", sql))
 app.add_handler(CommandHandler("docker2", docker2))
 app.add_handler(CommandHandler("javaScript", javaScript))
+app.add_handler(CommandHandler("jquery", jquery))
 # the Downloads
 app.add_handler(CommandHandler("Downloads", Downloads))
 app.add_handler(CommandHandler("linux", linux))
@@ -127,8 +117,6 @@ app.add_handler(CommandHandler("python", python))
 app.add_handler(CommandHandler("bootstrap", bootstrap))
 app.add_handler(CommandHandler("docker", docker))
 app.add_handler(CommandHandler("vscode", vscode))
-# the query
-app.add_handler(CallbackQueryHandler(queryHandler))
 
 if __name__ == "__main__":
     app.run_polling()
